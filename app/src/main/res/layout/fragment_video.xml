@@ -1,0 +1,101 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/relativeLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="#000000">
+
+    <TextView
+        android:id="@+id/artiest"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textIsSelectable="false"
+        android:textColor="#069BFF"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/titel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/artiest"
+        android:layout_marginTop="5dp"
+        android:textIsSelectable="false" />
+
+    <!--<ImageView
+        android:id="@+id/favoriet"
+        android:contentDescription="@+id/favoriet"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/ic_star_border_white_48dp" />-->
+
+    <ProgressBar
+        style="?android:attr/progressBarStyleLarge"
+        android:id="@+id/progressBar"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginLeft="100dp"
+        android:layout_marginRight="100dp"
+        android:layout_marginTop="115dp"
+        android:layout_marginBottom="100dp"
+        android:layout_below="@+id/titel"/>
+
+    <ImageView
+        android:id="@+id/plaatje"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:layout_below="@+id/titel"
+        android:layout_marginTop="15dp"
+        android:contentDescription="@+id/plaatje" />
+
+    <ImageView
+        android:id="@+id/plaatje_start_stop"
+        android:contentDescription="@+id/plaatje_start_stop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/plaatje"
+        android:layout_marginTop="15dp"
+        android:src="@drawable/start"/>
+
+    <TextView
+        android:id="@+id/tekst_start_stop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/plaatje_start_stop"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="35dp"
+        android:layout_marginStart="35dp"
+        android:textIsSelectable="false"
+        android:textColor="#069BFF"
+        android:textSize="20sp"
+        android:text="@string/nummer_1"
+        android:clickable="true" />
+
+    <ImageView
+        android:id="@+id/plaatje_download"
+        android:contentDescription="@+id/plaatje_playlist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/plaatje_start_stop"
+        android:layout_marginTop="15dp"
+        android:src="@drawable/download" />
+
+    <TextView
+        android:id="@+id/tekst_download"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/plaatje_download"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="35dp"
+        android:layout_marginStart="35dp"
+        android:textIsSelectable="false"
+        android:textColor="#069BFF"
+        android:textSize="20sp"
+        android:text="@string/nummer_3"
+        android:clickable="true" />
+
+</RelativeLayout>

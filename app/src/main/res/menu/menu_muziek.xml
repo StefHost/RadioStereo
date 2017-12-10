@@ -1,0 +1,21 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:radiostereo="http://schemas.android.com/apk/res-auto">
+
+    <item android:id="@+id/action_search"
+        android:title="@string/menu_muziek_1"
+        android:icon="@drawable/zoeken"
+        radiostereo:showAsAction="ifRoom|collapseActionView"
+        radiostereo:actionViewClass="android.support.v7.widget.SearchView" />
+
+    <item android:id="@+id/computer_uit"
+          android:icon="@drawable/computer_uit"
+          android:title="Computer Aan"
+          radiostereo:showAsAction="always" />
+
+    <item android:id="@+id/computer_aan"
+          android:icon="@drawable/computer_aan"
+          android:title="Computer Aan"
+          android:visible="false"
+          radiostereo:showAsAction="always" />
+
+</menu>

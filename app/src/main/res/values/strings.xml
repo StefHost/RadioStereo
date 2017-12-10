@@ -1,0 +1,37 @@
+<resources>
+    <string name="app_name">Radio Stereo</string>
+
+    <!-- Inloggen -->
+    <string name="title_activity_inloggen">Inloggen</string>
+    <string name="inloggen_1">Naam</string>
+    <string name="inloggen_2">Wachtwoord</string>
+    <string name="inloggen_3">Inloggen</string>
+    <string name="inloggen_4">Nog geen account?</string>
+    <string name="inloggen_5">Klik hier om te registreren</string>
+
+    <!-- Registreren -->
+    <string name="title_activity_registreren">Registreren</string>
+    <string name="registreren_1">Naam</string>
+    <string name="registreren_2">Wachtwoord</string>
+    <string name="registreren_3">Wachtwoord herhalen</string>
+    <string name="registreren_4">E-mailadres</string>
+    <string name="registreren_5">Registreren</string>
+
+    <!-- Chat -->
+    <string name="chat_1">Typ hier je bericht</string>
+
+    <!-- Muziek -->
+    <string name="menu_muziek_1">Zoeken</string>
+
+    <!-- Nummer -->
+    <string name="nummer_1">Afspelen</string>
+    <string name="nummer_2">Toevoegen aan playlist</string>
+    <string name="nummer_3">Download</string>
+
+    <!-- Over -->
+    <string name="over_1">Radio Stereo App</string>
+    <string name="over_2">Versie 2.0</string>
+    <string name="over_3">\u00A9 2016 Radio Stereo</string>
+    <string name="over_4">www.radiostereo.nl</string>
+
+</resources>
