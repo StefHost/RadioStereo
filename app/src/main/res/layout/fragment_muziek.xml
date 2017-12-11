@@ -3,52 +3,81 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
-        android:id="@+id/linearLayout1"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
+    <HorizontalScrollView
+        android:id="@+id/scrollView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none">
 
-        <TextView
-            android:id="@+id/menu_1"
-            android:layout_width="100dp"
-            android:layout_height="50dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:textSize="15sp"
-            android:textColor="#ffffff"
+        <LinearLayout
+            android:id="@+id/linearLayout1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:background="#FF212121"
-            android:text="ALLES" />
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp">
 
-        <TextView
-            android:id="@+id/menu_2"
-            android:layout_width="100dp"
-            android:layout_height="50dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:textSize="15sp"
-            android:textColor="#ffffff"
-            android:background="#FF212121"
-            android:text="ALBUMS" />
+            <TextView
+                android:id="@+id/menu_1"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="top"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:text="ALLES"
+                android:textColor="#ffffff"
+                android:textSize="15sp"
+                android:drawableBottom="@drawable/selectie"
+                android:drawablePadding="5dp"/>
 
-        <TextView
-            android:id="@+id/menu_3"
-            android:layout_width="100dp"
-            android:layout_height="50dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:textSize="15sp"
-            android:textColor="#ffffff"
-            android:background="#FF212121"
-            android:text="FAVORIETEN" />
+            <TextView
+                android:id="@+id/menu_2"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="top"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:text="ALBUMS"
+                android:textColor="#ffffff"
+                android:textSize="15sp"
+                android:drawablePadding="5dp"/>
 
-    </LinearLayout>
+            <TextView
+                android:id="@+id/menu_3"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="top"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:text="FAVORIETEN"
+                android:textColor="#ffffff"
+                android:textSize="15sp"
+                android:drawablePadding="5dp"/>
+
+            <TextView
+                android:id="@+id/menu_4"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="top"
+                android:lines="1"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:text="AFSPEELLIJSTEN"
+                android:textColor="#ffffff"
+                android:textSize="15sp"
+                android:drawablePadding="5dp"/>
+
+        </LinearLayout>
+
+    </HorizontalScrollView>
 
     <LinearLayout
         android:id="@+id/linearLayout2"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="-8dp"
-        android:layout_below="@+id/linearLayout1">
+        android:layout_below="@+id/scrollView1"
+        android:visibility="gone">
 
         <TextView
             android:id="@+id/keuze_1"
@@ -69,6 +98,14 @@
 
         <TextView
             android:id="@+id/keuze_3"
+            android:layout_width="wrap_content"
+            android:layout_height="5dp"
+            android:layout_weight="1"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp" />
+
+        <TextView
+            android:id="@+id/keuze_4"
             android:layout_width="wrap_content"
             android:layout_height="5dp"
             android:layout_weight="1"

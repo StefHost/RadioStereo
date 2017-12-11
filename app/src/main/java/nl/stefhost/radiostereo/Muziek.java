@@ -7,7 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -55,13 +55,15 @@ public class Muziek extends Fragment implements View.OnClickListener {
     public String naam;
     public ListView listView;
 
-    public TextView keuze_1;
-    public TextView keuze_2;
-    public TextView keuze_3;
+    public TextView menu_1;
+    public TextView menu_2;
+    public TextView menu_3;
+    public TextView menu_4;
 
     public String computer;
     public String mp3_path;
     public String zoekterm = "";
+    public String afspeellijst = "";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -71,17 +73,15 @@ public class Muziek extends Fragment implements View.OnClickListener {
 
         listView = (ListView) View.findViewById(R.id.listView);
 
-        TextView menu_1 = (TextView) View.findViewById(R.id.menu_1);
-        TextView menu_2 = (TextView) View.findViewById(R.id.menu_2);
-        TextView menu_3 = (TextView) View.findViewById(R.id.menu_3);
-
-        keuze_1 = (TextView) View.findViewById(R.id.keuze_1);
-        keuze_2 = (TextView) View.findViewById(R.id.keuze_2);
-        keuze_3 = (TextView) View.findViewById(R.id.keuze_3);
+        menu_1 = (TextView) View.findViewById(R.id.menu_1);
+        menu_2 = (TextView) View.findViewById(R.id.menu_2);
+        menu_3 = (TextView) View.findViewById(R.id.menu_3);
+        menu_4 = (TextView) View.findViewById(R.id.menu_4);
 
         menu_1.setOnClickListener(this);
         menu_2.setOnClickListener(this);
         menu_3.setOnClickListener(this);
+        menu_4.setOnClickListener(this);
 
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("opties", 0);
         naam = sharedPreferences.getString("naam", "");
@@ -246,21 +246,31 @@ public class Muziek extends Fragment implements View.OnClickListener {
 
     public void onClick(View v) {
 
+        stringList1.clear();
+        stringList2.clear();
+
         int id = v.getId();
 
-        keuze_1.setBackgroundColor(0);
-        keuze_2.setBackgroundColor(0);
-        keuze_3.setBackgroundColor(0);
+        Drawable selectie = getResources().getDrawable(R.drawable.selectie);
+
+        menu_1.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
+        menu_2.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
+        menu_3.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
+        menu_4.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
 
         if (id == R.id.menu_1){
             keuze = "alles";
-            keuze_1.setBackgroundColor(Color.parseColor("#069BFF"));
+            menu_1.setCompoundDrawablesWithIntrinsicBounds(null, null, null, selectie);
         }else if (id == R.id.menu_2){
             keuze = "albums";
-            keuze_2.setBackgroundColor(Color.parseColor("#069BFF"));
-        }else{
+            menu_2.setCompoundDrawablesWithIntrinsicBounds(null, null, null, selectie);
+        }else if (id == R.id.menu_3){
             keuze = "favorieten";
-            keuze_3.setBackgroundColor(Color.parseColor("#069BFF"));
+            menu_3.setCompoundDrawablesWithIntrinsicBounds(null, null, null, selectie);
+        }else{
+            keuze = "afspeellijsten";
+            afspeellijst = "";
+            menu_4.setCompoundDrawablesWithIntrinsicBounds(null, null, null, selectie);
         }
 
         progressDialog = android.app.ProgressDialog.show(this.getContext(), "Muziek laden", "Even geduld aub..", true, false);
@@ -272,15 +282,12 @@ public class Muziek extends Fragment implements View.OnClickListener {
         @Override
         protected String doInBackground(Void... params)  {
 
-            stringList1.clear();
-            stringList2.clear();
-
             URL url = null;
             URLConnection urlConnection = null;
             InputStream inputStream = null;
 
             try {
-                url = new URL("http://www.radiostereo.nl/paginas/app%202.0/muziek_laden.php?keuze="+keuze+"&gebruiker="+naam+"&zoekterm="+zoekterm);
+                url = new URL("http://www.radiostereo.nl/paginas/app%202.0/muziek_laden.php?keuze="+keuze+"&gebruiker="+naam+"&zoekterm="+zoekterm+"&afspeellijst="+afspeellijst);
             } catch (MalformedURLException e) {
                 System.out.println("MalformedURLException");
             }
@@ -351,11 +358,26 @@ public class Muziek extends Fragment implements View.OnClickListener {
                         Bundle bundle = new Bundle();
                         bundle.putString("nummer", nummer);
 
-                        if (keuze.equals("albums")){
+                        if (keuze.equals("albums")) {
                             Fragment fragment = new Album();
                             fragment.setArguments(bundle);
                             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                             fragmentManager.beginTransaction().add(R.id.frame_layout, fragment, "NUMMER").addToBackStack(null).commit();
+
+                        }else if(keuze.equals("afspeellijsten")){
+                            if (afspeellijst.equals("")){
+                                afspeellijst = nummer;
+                                progressDialog = android.app.ProgressDialog.show(getContext(), "Muziek laden", "Even geduld aub..", true, false);
+
+                                stringList1.clear();
+                                stringList2.clear();
+                                new muziek_laden().execute();
+                            }else{
+                                Fragment fragment = new Nummer();
+                                fragment.setArguments(bundle);
+                                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                                fragmentManager.beginTransaction().add(R.id.frame_layout, fragment, "NUMMER").addToBackStack(null).commit();
+                            }
                         }else{
                             Fragment fragment = new Nummer();
                             fragment.setArguments(bundle);
