@@ -29,6 +29,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -97,7 +98,7 @@ public class Muziek extends Fragment implements View.OnClickListener {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_muziek, menu);
         if (naam.equals("Stefan") || naam.equals("Ronald")){
-            inflater.inflate(R.menu.menu_muziek_admin, menu);
+            //inflater.inflate(R.menu.menu_muziek_admin, menu);
         }
 
         MenuItem menuItem = menu.findItem(R.id.action_search);
@@ -153,6 +154,10 @@ public class Muziek extends Fragment implements View.OnClickListener {
                 editor2.apply();
                 computer = "UIT";
                 getActivity().invalidateOptionsMenu();
+                return true;
+            case R.id.playlist:
+                progressDialog = android.app.ProgressDialog.show(this.getContext(), "Muziek toevoegen aan playlist", "Even geduld aub..", true, false);
+                new playlist().execute();
                 return true;
             case R.id.muziek_uploaden:
                 Intent intent = new Intent();
@@ -234,13 +239,18 @@ public class Muziek extends Fragment implements View.OnClickListener {
 
         MenuItem menuItem1 = menu.findItem(R.id.computer_uit);
         MenuItem menuItem2 = menu.findItem(R.id.computer_aan);
+        MenuItem menuItem3 = menu.findItem(R.id.playlist);
 
         if (computer.equals("UIT")) {
             menuItem1.setVisible(true);
             menuItem2.setVisible(false);
+            menuItem3.setVisible(false);
         }else{
             menuItem1.setVisible(false);
             menuItem2.setVisible(true);
+            if (keuze.equals("favorieten")) {
+                menuItem3.setVisible(true);
+            }
         }
     }
 
@@ -272,6 +282,8 @@ public class Muziek extends Fragment implements View.OnClickListener {
             afspeellijst = "";
             menu_4.setCompoundDrawablesWithIntrinsicBounds(null, null, null, selectie);
         }
+
+        getActivity().invalidateOptionsMenu();
 
         progressDialog = android.app.ProgressDialog.show(this.getContext(), "Muziek laden", "Even geduld aub..", true, false);
         new muziek_laden().execute();
@@ -481,6 +493,67 @@ public class Muziek extends Fragment implements View.OnClickListener {
             return serverResponseCode;
 
         }
+    }
+
+    private class playlist extends AsyncTask<Void, Void, String> {
+        @Override
+        protected String doInBackground(Void... params)  {
+
+            URL url = null;
+            URLConnection urlConnection = null;
+            InputStream inputStream = null;
+
+            try {
+                url = new URL("http://www.radiostereo.nl/paginas/app%202.0/playlist.php?gebruiker="+naam+"&keuze="+keuze);
+            } catch (MalformedURLException e) {
+                System.out.println("MalformedURLException");
+            }
+
+            if (url != null){
+                try{
+                    urlConnection = url.openConnection();
+                }catch (java.io.IOException e){
+                    System.out.println("java.io.IOException");
+                }
+            }
+
+            if (urlConnection != null){
+                try{
+                    inputStream = new BufferedInputStream(urlConnection.getInputStream());
+                }catch (java.io.IOException e) {
+                    System.out.println("java.io.IOException");
+                }
+            }
+
+            if (inputStream != null){
+
+                InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+
+                try{
+                    resultaat = bufferedReader.readLine();
+                }catch (java.io.IOException e) {
+                    System.out.println("java.io.IOException");
+                }
+
+            }else{
+                resultaat = "ERROR";
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            progressDialog.dismiss();
+            playlist_klaar();
+        }
+
+    }
+
+    public void playlist_klaar() {
+        Toast toast = Toast.makeText(this.getContext(), "De muziek is toegevoegd aan je online playlist", Toast.LENGTH_SHORT);
+        toast.show();
     }
 
 }
