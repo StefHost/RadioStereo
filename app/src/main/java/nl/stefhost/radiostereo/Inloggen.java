@@ -155,7 +155,7 @@ public class Inloggen extends AppCompatActivity {
 
             //Database maken
             SQLiteDatabase SQLiteDatabase = this.openOrCreateDatabase("Database", Context.MODE_PRIVATE, null);
-            SQLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS playlist (id INTEGER PRIMARY KEY, artiest text not null, titel text not null, album text not null, nummer text not null, online text not null)");
+            SQLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS playlist (id INTEGER PRIMARY KEY, artiest text not null, titel text not null, album text not null, nummer text not null, online text not null, album_id text not null)");
 
             Intent intent = new Intent(this, Beginscherm.class);
             startActivity(intent);

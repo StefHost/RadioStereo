@@ -177,7 +177,7 @@ public class Album extends Fragment implements View.OnClickListener {
             alle_nummers[tellen] = titel;
             int nummer = tellen+1;
             String nummer_tekst;
-            if (tellen < 10) {
+            if (tellen < 9) {
                 nummer_tekst = "0"+nummer;
             }else{
                 nummer_tekst = ""+nummer;
@@ -264,14 +264,14 @@ public class Album extends Fragment implements View.OnClickListener {
             while (tellen < aantal_nummers + 1) {
 
                 String titel = alle_nummers[tellen - 1];
-                String nummer;
-                if (tellen < 10) {
-                    nummer = "0" + tellen;
+                String nummers;
+                if (tellen < 9) {
+                    nummers = "0" + tellen;
                 }else{
-                    nummer = "" + tellen;
+                    nummers = "" + tellen;
                 }
                 titel = titel.replace("'", "[komma]");
-                SQLiteDatabase.execSQL("INSERT INTO playlist (artiest, titel, album, nummer, online) VALUES ('"+artiest+"', '"+titel+"', '"+album+"', '"+nummer+"', 'offline')");
+                SQLiteDatabase.execSQL("INSERT INTO playlist (artiest, titel, album, nummer, online, album_id) VALUES ('"+artiest+"', '"+titel+"', '"+album+"', '"+nummers+"', 'offline', '"+nummer+"')");
                 tellen++;
             }
 

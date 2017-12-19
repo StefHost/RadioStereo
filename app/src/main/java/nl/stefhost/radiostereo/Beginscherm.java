@@ -31,9 +31,11 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
@@ -59,6 +61,11 @@ public class Beginscherm extends AppCompatActivity {
     static PendingIntent pendingIntent2;
     static PendingIntent pendingIntent3;
 
+    static public String naam;
+    static public String album_id;
+    static public String album_nummer;
+    static public String resultaat;
+
     static Context context;
 
     int[] icons = new int[]{R.drawable.chat, R.drawable.muziek, R.drawable.muziekraden, R.drawable.videos, R.drawable.streep, R.drawable.over, R.drawable.uitloggen};
@@ -70,7 +77,7 @@ public class Beginscherm extends AppCompatActivity {
         setContentView(R.layout.activity_beginscherm);
 
         SharedPreferences sharedPreferences = getSharedPreferences("opties", 0);
-        String naam = sharedPreferences.getString("naam", "");
+        naam = sharedPreferences.getString("naam", "");
 
         if (naam.equals("")){
             Intent intent = new Intent(this, Inloggen.class);
@@ -274,14 +281,15 @@ public class Beginscherm extends AppCompatActivity {
 
     public static void test_functie(){
 
-        Cursor cursor = SQLiteDatabase.rawQuery("SELECT id, artiest, titel, album, nummer, online FROM playlist", null);
+        Cursor cursor = SQLiteDatabase.rawQuery("SELECT id, artiest, titel, album, nummer, online, album_id FROM playlist", null);
         if (cursor.moveToFirst()) {
             int id = cursor.getInt(cursor.getColumnIndex("id"));
             String artiest = cursor.getString(cursor.getColumnIndex("artiest"));
             String titel = cursor.getString(cursor.getColumnIndex("titel"));
             String album = cursor.getString(cursor.getColumnIndex("album"));
-            String nummer = cursor.getString(cursor.getColumnIndex("nummer"));
+            album_nummer = cursor.getString(cursor.getColumnIndex("nummer"));
             String online = cursor.getString(cursor.getColumnIndex("online"));
+            album_id = cursor.getString(cursor.getColumnIndex("album_id"));
             //Log.d("Radio Stereo", artiest+"|"+titel+"|"+album+"|"+nummer+"|"+online);
             SQLiteDatabase.execSQL("delete from playlist WHERE id='" + id + "'");
 
@@ -295,12 +303,13 @@ public class Beginscherm extends AppCompatActivity {
                     .setContentTitle("Radio Stereo")
                     .setContentText(notificatie_tekst);
 
-            Builder.addAction(R.drawable.stop, "", pendingIntent1);
-            Builder.addAction(R.drawable.start, "", pendingIntent2);
+            Builder.addAction(R.drawable.stop, "Stop", pendingIntent1);
+            Builder.addAction(R.drawable.start, "Volgende", pendingIntent2);
 
             NotificationManager.notify(1, Builder.build());
 
-            new Muziekspeler_offline().execute(artiest, titel, album, nummer);
+            new Muziekspeler_offline().execute(artiest, titel, album, album_nummer);
+            new app_info().execute();
 
         }else{
             Muziekspeler_offline.stop();
@@ -318,8 +327,8 @@ public class Beginscherm extends AppCompatActivity {
                 .setContentTitle("Radio Stereo")
                 .setContentText(notificatie_tekst);
 
-        Builder.addAction(R.drawable.kleur_paars, "", pendingIntent3);
-        Builder.addAction(R.drawable.kleur_blauw, "", pendingIntent2);
+        Builder.addAction(R.drawable.start, "Start", pendingIntent3);
+        Builder.addAction(R.drawable.start, "Volgende", pendingIntent2);
 
         NotificationManager.notify(1, Builder.build());
 
@@ -333,14 +342,12 @@ public class Beginscherm extends AppCompatActivity {
                 .setContentTitle("Radio Stereo")
                 .setContentText(notificatie_tekst);
 
-        Builder.addAction(R.drawable.stop, "", pendingIntent1);
-        Builder.addAction(R.drawable.start, "", pendingIntent2);
+        Builder.addAction(R.drawable.stop, "Stop", pendingIntent1);
+        Builder.addAction(R.drawable.start, "Volgende", pendingIntent2);
 
         NotificationManager.notify(1, Builder.build());
 
     }
-
-    public String resultaat;
 
     private class huidig_nummer extends AsyncTask<Void, Void, String> {
         @Override
@@ -393,7 +400,6 @@ public class Beginscherm extends AppCompatActivity {
         @Override
         protected void onPostExecute(String result) {
             if (!resultaat.equals("LEEG")){
-                //resultaat = resultaat.replace(" - ", "\n");
                 TextView textView = (TextView) findViewById(R.id.textView);
                 textView.setText(resultaat);
             }
@@ -417,6 +423,60 @@ public class Beginscherm extends AppCompatActivity {
         protected void onPostExecute(String result) {
             new huidig_nummer().execute();
         }
+    }
+
+    private static class app_info extends AsyncTask<Void, Void, String> {
+        @Override
+        protected String doInBackground(Void... params)  {
+
+            URL url = null;
+            URLConnection urlConnection = null;
+            InputStream inputStream = null;
+
+            try {
+                url = new URL("http://www.radiostereo.nl/paginas/app%202.0/app_info.php?gebruiker="+naam+"&album_id="+album_id+"&album_nummer="+album_nummer);
+            } catch (MalformedURLException e) {
+                System.out.println("MalformedURLException");
+            }
+
+            if (url != null){
+                try{
+                    urlConnection = url.openConnection();
+                }catch (IOException e){
+                    System.out.println("java.io.IOException");
+                }
+            }
+
+            if (urlConnection != null){
+                try{
+                    inputStream = new BufferedInputStream(urlConnection.getInputStream());
+                }catch (IOException e) {
+                    System.out.println("java.io.IOException");
+                }
+            }
+
+            if (inputStream != null){
+
+                InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+
+                try{
+                    resultaat = bufferedReader.readLine();
+                }catch (IOException e) {
+                    System.out.println("java.io.IOException");
+                }
+
+            }else{
+                resultaat = "ERROR";
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+        }
+
     }
 
 }
