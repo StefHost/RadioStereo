@@ -118,7 +118,7 @@ public class Beginscherm extends AppCompatActivity {
             Intent intent = getIntent();
             Uri data = intent.getData();
             String link = ""+data;
-            link = link.replace("http://app.radiostereo.nl/", "");
+            link = link.replace("http://app.radiostereo.nl/?id=", "");
 
             if (!link.equals("null")){
                 Log.d("Radio Stereo Begin: ", ""+link);

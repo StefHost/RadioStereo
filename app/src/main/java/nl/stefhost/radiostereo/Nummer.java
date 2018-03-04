@@ -2,6 +2,7 @@ package nl.stefhost.radiostereo;
 
 import android.app.NotificationManager;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.AnimationDrawable;
@@ -12,6 +13,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -61,6 +65,7 @@ public class Nummer extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View View = inflater.inflate(R.layout.fragment_nummer, container, false);
+        setHasOptionsMenu(true);
 
         imageView1 = (ImageView) View.findViewById(R.id.plaatje);
         imageView2 = (ImageView) View.findViewById(R.id.plaatje_start_stop);
@@ -88,6 +93,27 @@ public class Nummer extends Fragment implements View.OnClickListener {
         relativeLayout.setOnClickListener(this);
 
         return View;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_nummer, menu);
+        super.onCreateOptionsMenu(menu,inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.delen:
+                Intent sendIntent = new Intent();
+                sendIntent.setAction(Intent.ACTION_SEND);
+                sendIntent.putExtra(Intent.EXTRA_TEXT, "http://app.radiostereo.nl/?id="+nummer);
+                sendIntent.setType("text/plain");
+                startActivity(sendIntent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     public void onCreate(Bundle savedInstanceState) {
