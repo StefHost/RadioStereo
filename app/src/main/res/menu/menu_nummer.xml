@@ -1,0 +1,9 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:radiostereo="http://schemas.android.com/apk/res-auto">
+
+    <item android:id="@+id/delen"
+        android:title="DELEN"
+        android:icon="@drawable/delen"
+        radiostereo:showAsAction="always"/>
+
+</menu>
