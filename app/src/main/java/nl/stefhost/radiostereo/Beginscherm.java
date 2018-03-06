@@ -479,4 +479,17 @@ public class Beginscherm extends AppCompatActivity {
 
     }
 
+    boolean herhalen = true;
+
+    public void herhalen (View view){
+        if (herhalen){
+            herhalen = false;
+            Log.d("Radio Stereo", "Herhalen uit");
+        }else{
+            herhalen = true;
+            Log.d("Radio Stereo", "Herhalen aan");
+        }
+
+    }
+
 }
