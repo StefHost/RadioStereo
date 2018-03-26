@@ -2,8 +2,10 @@ package nl.stefhost.radiostereo;
 
 import android.app.NotificationManager;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.AsyncTask;
@@ -243,30 +245,36 @@ public class Nummer extends Fragment implements View.OnClickListener {
 
     }
 
+
+
     public void afspelen(){
         if (status.matches("")){
-            new Muziekspeler().execute(link);
+            //new Muziekspeler().execute(link);
+            android.database.sqlite.SQLiteDatabase SQLiteDatabase = this.getContext().openOrCreateDatabase("Database", Context.MODE_PRIVATE, null);
+            SQLiteDatabase.execSQL("INSERT INTO playlist (artiest, titel, online, album_id) VALUES ('"+artiest+"', '"+titel+"', 'online', '"+nummer+"')");
+            Beginscherm.test_functie();
+
             textView3.setText("Stoppen");
             imageView2.setImageResource(R.drawable.stop);
             status = "UIT";
-            NotificationCompat.Builder Builder = new NotificationCompat.Builder(this.getContext()).setSmallIcon(R.drawable.icon).setContentTitle("Radio Stereo").setContentText(artiest+" - "+titel);
-            NotificationManager NotificationManager = (NotificationManager) getActivity().getSystemService(Beginscherm.NOTIFICATION_SERVICE);
-            NotificationManager.notify(1, Builder.build());
+            //NotificationCompat.Builder Builder = new NotificationCompat.Builder(this.getContext()).setSmallIcon(R.drawable.icon).setContentTitle("Radio Stereo").setContentText(artiest+" - "+titel);
+            //NotificationManager NotificationManager = (NotificationManager) getActivity().getSystemService(Beginscherm.NOTIFICATION_SERVICE);
+            //NotificationManager.notify(1, Builder.build());
         }else if (status.matches("AAN")){
             Muziekspeler.start();
             textView3.setText("Stoppen");
             imageView2.setImageResource(R.drawable.stop);
             status = "UIT";
-            NotificationCompat.Builder Builder = new NotificationCompat.Builder(this.getContext()).setSmallIcon(R.drawable.icon).setContentTitle("Radio Stereo").setContentText(artiest+" - "+titel);
-            NotificationManager NotificationManager = (NotificationManager) getActivity().getSystemService(Beginscherm.NOTIFICATION_SERVICE);
-            NotificationManager.notify(1, Builder.build());
+            //NotificationCompat.Builder Builder = new NotificationCompat.Builder(this.getContext()).setSmallIcon(R.drawable.icon).setContentTitle("Radio Stereo").setContentText(artiest+" - "+titel);
+            //NotificationManager NotificationManager = (NotificationManager) getActivity().getSystemService(Beginscherm.NOTIFICATION_SERVICE);
+            //NotificationManager.notify(1, Builder.build());
         }else{
             Muziekspeler.stop();
             textView3.setText("Afspelen");
             imageView2.setImageResource(R.drawable.start);
             status = "AAN";
-            NotificationManager NotificationManager = (NotificationManager) getActivity().getSystemService(Beginscherm.NOTIFICATION_SERVICE);
-            NotificationManager.cancel(1);
+            //NotificationManager NotificationManager = (NotificationManager) getActivity().getSystemService(Beginscherm.NOTIFICATION_SERVICE);
+            //NotificationManager.cancel(1);
         }
     }
 

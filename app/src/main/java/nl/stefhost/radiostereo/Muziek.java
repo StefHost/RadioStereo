@@ -165,6 +165,23 @@ public class Muziek extends Fragment implements View.OnClickListener {
                 intent.setAction(Intent.ACTION_GET_CONTENT);
                 startActivityForResult(intent, 1234);
                 return true;
+            case R.id.alles_afspelen:
+                android.database.sqlite.SQLiteDatabase SQLiteDatabase = this.getContext().openOrCreateDatabase("Database", Context.MODE_PRIVATE, null);
+
+                int aantal = listView.getCount();
+                int tellen = 0;
+                while (tellen < aantal) {
+                    String totaal = listView.getItemAtPosition(tellen).toString();
+                    //Log.d("Radio Stereo", "" + totaal);
+                    String[] splitsen = totaal.split(" - ");
+                    String artiest = splitsen[0];
+                    String titel = splitsen[1];
+                    SQLiteDatabase.execSQL("INSERT INTO playlist (artiest, titel, online, album_id) VALUES ('"+artiest+"', '"+titel+"', 'online', '0')");
+                    tellen++;
+                }
+
+                Beginscherm.test_functie();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -240,17 +257,22 @@ public class Muziek extends Fragment implements View.OnClickListener {
         MenuItem menuItem1 = menu.findItem(R.id.computer_uit);
         MenuItem menuItem2 = menu.findItem(R.id.computer_aan);
         MenuItem menuItem3 = menu.findItem(R.id.playlist);
+        MenuItem menuItem4 = menu.findItem(R.id.alles_afspelen);
 
         if (computer.equals("UIT")) {
             menuItem1.setVisible(true);
             menuItem2.setVisible(false);
             menuItem3.setVisible(false);
+            if ((keuze.equals("afspeellijsten") && !afspeellijst.equals("")) || keuze.equals("favorieten")){
+                menuItem4.setVisible(true);
+            }
         }else{
             menuItem1.setVisible(false);
             menuItem2.setVisible(true);
             if (keuze.equals("favorieten")) {
                 menuItem3.setVisible(true);
             }
+            menuItem4.setVisible(false);
         }
     }
 
@@ -399,6 +421,8 @@ public class Muziek extends Fragment implements View.OnClickListener {
                     }
                 }
             });
+
+            getActivity().invalidateOptionsMenu();
         }
 
     }

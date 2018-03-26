@@ -22,4 +22,8 @@
         android:title="Toevoegen aan playlist"
         android:visible="false" />
 
+    <item android:id="@+id/alles_afspelen"
+        android:title="Alles afspelen"
+        android:visible="false" />
+
 </menu>

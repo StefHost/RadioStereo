@@ -107,8 +107,8 @@ public class Chat extends Fragment implements View.OnClickListener {
 
     public void verzenden(){
 
-        InputMethodManager InputMethodManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        InputMethodManager.hideSoftInputFromWindow(editText1.getWindowToken(), 0);
+        //InputMethodManager InputMethodManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        //InputMethodManager.hideSoftInputFromWindow(editText1.getWindowToken(), 0);
 
         bericht = editText1.getText().toString();
         bericht = bericht.replace(" ", "%20");

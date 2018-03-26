@@ -28,6 +28,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
@@ -45,6 +46,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import nl.stefhost.radiostereo.functies.Muziekspeler;
 import nl.stefhost.radiostereo.functies.Muziekspeler_offline;
 
 public class Beginscherm extends AppCompatActivity {
@@ -66,7 +68,12 @@ public class Beginscherm extends AppCompatActivity {
     static public String album_nummer;
     static public String resultaat;
 
+    public static TextView textView;
+    public static SharedPreferences sharedPreferences;
+
     static Context context;
+
+    public static boolean herhalen = false;
 
     int[] icons = new int[]{R.drawable.chat, R.drawable.muziek, R.drawable.muziekraden, R.drawable.videos, R.drawable.streep, R.drawable.over, R.drawable.uitloggen};
     String[] titles = new String[] {"Chat", "Muziek", "Muziekraden", "Video's", "", "Over", "Uitloggen"};
@@ -76,8 +83,9 @@ public class Beginscherm extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_beginscherm);
 
-        SharedPreferences sharedPreferences = getSharedPreferences("opties", 0);
+        sharedPreferences = getSharedPreferences("opties", 0);
         naam = sharedPreferences.getString("naam", "");
+        String huidige_nummer = sharedPreferences.getString("huidige_nummer", "");
 
         if (naam.equals("")){
             Intent intent = new Intent(this, Inloggen.class);
@@ -155,6 +163,12 @@ public class Beginscherm extends AppCompatActivity {
             pendingIntent3 = PendingIntent.getBroadcast(this, 0, intent3, PendingIntent.FLAG_UPDATE_CURRENT);
 
             context = Beginscherm.this;
+
+            textView = findViewById(R.id.textView);
+
+            if (!huidige_nummer.equals("")){
+                textView.setText(huidige_nummer);
+            }
         }
 
     }
@@ -303,17 +317,35 @@ public class Beginscherm extends AppCompatActivity {
                     .setContentTitle("Radio Stereo")
                     .setContentText(notificatie_tekst);
 
-            Builder.addAction(R.drawable.stop, "Stop", pendingIntent1);
-            Builder.addAction(R.drawable.start, "Volgende", pendingIntent2);
+            Builder.addAction(R.drawable.stop, "stop", pendingIntent1);
+            Builder.addAction(R.drawable.start, "volgende", pendingIntent2);
 
             NotificationManager.notify(1, Builder.build());
 
-            new Muziekspeler_offline().execute(artiest, titel, album, album_nummer);
+            if (online.equals("offline")) {
+                new Muziekspeler_offline().execute(artiest, titel, album, album_nummer);
+            }else{
+                String link = "http://muziek.radiostereo.nl/"+artiest+" - "+titel+".mp3";
+                new Muziekspeler().execute(link);
+            }
+            textView.setText(artiest+" - "+titel);
+
+            // huidige nummer opslaan
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("huidige_nummer", artiest+" - "+titel);
+            editor.apply();
+
             new app_info().execute();
 
         }else{
-            Muziekspeler_offline.stop();
-            NotificationManager.cancel(1);
+            if (herhalen){
+                Muziekspeler_offline.start();
+                Muziekspeler.start();
+            }else{
+                Muziekspeler_offline.stop();
+                Muziekspeler.stop();
+                NotificationManager.cancel(1);
+            }
         }
 
         cursor.close();
@@ -479,15 +511,16 @@ public class Beginscherm extends AppCompatActivity {
 
     }
 
-    boolean herhalen = true;
-
     public void herhalen (View view){
+        ImageView imageView = findViewById(R.id.herhalen);
         if (herhalen){
             herhalen = false;
             Log.d("Radio Stereo", "Herhalen uit");
+            imageView.setImageResource(R.drawable.herhalen_uit);
         }else{
             herhalen = true;
             Log.d("Radio Stereo", "Herhalen aan");
+            imageView.setImageResource(R.drawable.herhalen_aan);
         }
 
     }

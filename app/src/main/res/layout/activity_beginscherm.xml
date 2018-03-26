@@ -13,25 +13,32 @@
             android:id="@+id/frame_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="50dp" /> <!-- 50dp -->
+            android:layout_marginBottom="50dp" />
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_below="@+id/frame_layout"
-            android:layout_marginTop="-50dp"> <!-- -50 -->
+            android:layout_marginTop="-50dp">
 
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:background="#069bff"/>
 
+            <!--<ImageView
+                android:id="@+id/computer_aan"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:src="@drawable/computer_aan" />-->
+
             <ImageView
                 android:id="@+id/computer_aan"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
-                android:src="@drawable/computer_aan" />
+                android:src="@drawable/telefoon_uit" />
 
             <TextView
                 android:id="@+id/textView"
@@ -39,7 +46,7 @@
                 android:layout_height="match_parent"
                 android:layout_toRightOf="@+id/computer_aan"
                 android:layout_marginLeft="20dp"
-                android:text="Artiest - Titel"
+                android:text=""
                 android:gravity="center" />
 
             <ImageView
@@ -48,7 +55,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:src="@drawable/herhalen"
+                android:src="@drawable/herhalen_uit"
                 android:onClick="herhalen"/>
 
         </RelativeLayout>
